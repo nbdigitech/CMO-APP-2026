@@ -25,6 +25,7 @@ import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import { downloadAndZipImages } from '../../utils/zipCreate';
 import ModalMessage from '../components/ModalMessage';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const {width, height} = Dimensions.get('window')
 // ✅ ImageCard component
@@ -63,6 +64,7 @@ const ImageListScreen = (props) => {
   const [downloadPath, setDownloadPath] = useState("")
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const event = useSelector((state) => state.event);
   const user = useSelector(state=>state.login.user)
 
@@ -254,7 +256,7 @@ const ImageListScreen = (props) => {
           <View style={{ position: 'absolute', right: 20, paddingTop: 10 }}>
             {event?.eventPhotos?.length>0 &&
             <TouchableOpacity onPress={() => selectAllHandle()} style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold' }}>Select All</Text>
+              <Text style={{ fontWeight: 'bold' }}>{t.selectAll}</Text>
               <View
                 style={{
                   ...styles.checkboxContainer,
@@ -289,23 +291,23 @@ const ImageListScreen = (props) => {
         <View style={styles.pagination}>
           <TouchableOpacity disabled={page == 1} onPress={() => loadMoreHandle('previous')} 
           style={{...styles.paginateBtn, backgroundColor:page == 1?colors.border:colors.primary}}>
-            <Text style={{color:page == 1?"gray":"white", fontWeight:'bold'}}>Previous</Text>
+            <Text style={{color:page == 1?"gray":"white", fontWeight:'bold'}}>{t.previous}</Text>
           </TouchableOpacity>
 
             <View style={{...styles.paginateBtn, width:'33%'}}>
-              <Text style={{color:'white', fontWeight:'bold'}}>Page {page} of {count}</Text>
+              <Text style={{color:'white', fontWeight:'bold'}}>{t.pageOf} {page} of {count}</Text>
             </View>
 
           <TouchableOpacity disabled={page == count} onPress={() => loadMoreHandle('next')} 
           style={{...styles.paginateBtn, backgroundColor:page == count?colors.border:colors.primary}}>
-            <Text style={{color:page == count?"gray":'white', fontWeight:'bold'}}>Next</Text>
+            <Text style={{color:page == count?"gray":'white', fontWeight:'bold'}}>{t.next}</Text>
           </TouchableOpacity>
         </View>
       }
 
       {event.eventPhotos?.length == 0 &&
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-             <Text>No event photos</Text>
+             <Text>{t.noEventPhotos}</Text>
         </View>
          }
       </View>
@@ -314,11 +316,11 @@ const ImageListScreen = (props) => {
       <View style={styles.bottomSection}>
         <TouchableOpacity onPress={() => shareImages(selectedImages)} style={styles.link}>
           <Image source={Share4Img} style={{ ...styles.icon }} />
-          <Text style={styles.linkText}> Share</Text>
+          <Text style={styles.linkText}> {t.share}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => downloadZipHandle()} style={[styles.link, { backgroundColor: colors.primary, borderColor:colors.primary }]}>
           <Image source={DownNavImg} style={styles.icon} />
-          <Text style={[styles.linkText, { color: colors.secondary }]}> Download</Text>
+          <Text style={[styles.linkText, { color: colors.secondary }]}> {t.download}</Text>
         </TouchableOpacity>
       </View>
       }

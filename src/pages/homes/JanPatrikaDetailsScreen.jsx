@@ -12,11 +12,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvents, searchEvent } from '../../redux/actions/EventAction';
 import { openFilter } from '../../redux/reducers/filterReducer';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 
 
 const JanPatrikaDetailsScreen = (props) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   // const [text, setText] = useState('')
   const [janPatrikaDetails, setJanPatrikaDetails] = useState([]);

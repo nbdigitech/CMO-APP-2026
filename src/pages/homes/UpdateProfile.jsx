@@ -6,9 +6,11 @@ import colors from '../../constants/color';
 import commonStyle from '../components/Style';
 import Header from '../components/Header';
 import { useSelector } from 'react-redux';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const { width, height } = Dimensions.get("window");
 const UpdateProfile = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [isInvalid, setIsInvalid] = useState({mobile:false, password:false})
   const [mobile, setMobile] = useState('');
@@ -39,7 +41,7 @@ useEffect(() => {
 },[])
     return (
         <SafeAreaView style={styles.container}>
-            <Header screen='Update Profile' />
+            <Header screen={t.updateProfile || 'Update Profile'} />
             <View style={{...commonStyle.contentBox, justifyContent:'center', flex:1, borderRadius:0}}>
                 <View style={commonStyle.section}>
                 <Text style={styles.title}>Update</Text>

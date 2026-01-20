@@ -12,8 +12,10 @@ import { getPhotos, recordDownloadHistory } from '../../redux/actions/EventActio
 import { useDispatch, useSelector } from 'react-redux';
 import LoaderScreen from './LoaderScreen';
 import { downloadWarningModal, resetDownloadTrigger } from '../../redux/reducers/EventReducer';
+import { useTranslation } from '../../hooks/useTranslation';
 const { width } = Dimensions.get('window')
 const ImageCard = ({ item,  customHeight, downloadProcess, setCopy, startDownload }) => {
+    const { t } = useTranslation();
     const user = useSelector(state=>state.login.user)
     const eventTrigger = useSelector(state=>state.event.downloadTrigger)
     const [itemId, setItemId] = useState("")
@@ -125,7 +127,7 @@ else{
             <View style={commonStyle.directoryContent}>
               <View style={{marginLeft:10}}>
                 <Text style={commonStyle.imageCountText}>{item.photo_count}</Text>
-                <Text style={commonStyle.photosText}>photos</Text>
+                <Text style={commonStyle.photosText}>{t.viewAll}</Text>
               </View>
               <View style={styles.eventDateSection}>
                 <Text style={styles.eventDate}>{item?.date}</Text>

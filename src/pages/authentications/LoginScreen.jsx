@@ -29,8 +29,10 @@ import { loggedInSuccess } from '../../redux/reducers/loginReducer';
 import NetInfo from '@react-native-community/netinfo';
 import { updateNetwork } from '../../redux/reducers/NetworkReducer';
 import { BGImg, LogoWhiteImg } from '../assets';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const LoginScreen = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [mobile, setMobile] = useState('');
@@ -117,7 +119,7 @@ const LoginScreen = () => {
               <View style={commonStyle.dividerContainer}>
                 <View style={{ ...commonStyle.hr, width: '20%' }}></View>
                 <View style={commonStyle.centerText}>
-                  <Text>Or Sign In With Mobile</Text>
+                  <Text>{t.mobileSignIn || 'Or Sign In With Mobile'}</Text>
                 </View>
                 <View style={{ ...commonStyle.hr, width: '20%' }}></View>
               </View>
@@ -129,7 +131,7 @@ const LoginScreen = () => {
                     keyboardType="numeric"
                     contextMenuHidden={true}
                     maxLength={10}
-                    placeholder="Mobile No."
+                    placeholder={t.mobileNumber}
                     placeholderTextColor="#888"
                     onChangeText={text => {
                       setMobile(text);
@@ -139,7 +141,7 @@ const LoginScreen = () => {
                     style={[commonStyle.textInput, isInvalid.mobile && styles.inputError]}
                   />
                   {isInvalid.mobile && (
-                    <Text style={commonStyle.errorMessage}>Please enter 10 digit valid mobile</Text>
+                    <Text style={commonStyle.errorMessage}>{t.invalidMobile || 'Please enter 10 digit valid mobile'}</Text>
                   )}
                 </View>
                 <View style={{ width: '100%', alignItems: 'center' }}>
@@ -151,7 +153,7 @@ const LoginScreen = () => {
                     }}
                     value={password}
                     secureTextEntry={secureTextEntry}
-                    placeholder="Password"
+                    placeholder={t.password}
                     placeholderTextColor="#888"
                     style={{ ...commonStyle.textInput, marginTop: 10 }}
                   />
@@ -160,16 +162,16 @@ const LoginScreen = () => {
                     style={styles.passwordSeeBtn}
                   >
                     <Text style={{ color: colors.primary, fontWeight: 'bold' }}>
-                      {secureTextEntry ? 'Show' : 'Hide'}
+                      {secureTextEntry ? t.show || 'Show' : t.hide || 'Hide'}
                     </Text>
                   </TouchableOpacity>
                   {isInvalid.password && (
-                    <Text style={commonStyle.errorMessage}>Please enter valid password</Text>
+                    <Text style={commonStyle.errorMessage}>{t.invalidPassword || 'Please enter valid password'}</Text>
                   )}
                 </View>
 
                 <TouchableOpacity onPress={submitHandle} style={commonStyle.submitBtn}>
-                  <Text style={styles.btnText}>Sign In</Text>
+                  <Text style={styles.btnText}>{t.login}</Text>
                 </TouchableOpacity>
               </View>
 

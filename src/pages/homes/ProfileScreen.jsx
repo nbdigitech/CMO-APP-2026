@@ -33,12 +33,14 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import WarningModal from '../components/WarningModal';
 import ModalMessage from '../components/ModalMessage';
 import Toaster from '../components/Toaster';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 const { width, height } = Dimensions.get("window");
 
 
 const ProfileScreen = () => {
+  const { t } = useTranslation();
   // const [localWarningCheck, setLocalWarningCheck] = useState(null);
   const [data, setData] = useState([])
   const [localLoader, setLocalLoader] = useState(false)
@@ -128,7 +130,7 @@ const ProfileScreen = () => {
     <SafeAreaView style={styles.container}>
       <Header onLogout={() => {
         setLocalLoader(true)
-      }} screen="Profile" />
+      }} screen={t.profileScreen} />
 
       <View style={{flex:1, justifyContent:'space-between'}}>
           <MasonryList
@@ -167,7 +169,7 @@ const ProfileScreen = () => {
                     style={styles.profileColumn}
                   >
                     <Image source={DownNavImg} style={styles.iconImg} />
-                    <Text style={styles.iconText}>My Download</Text>
+                    <Text style={styles.iconText}>{t.myDownloadsLabel}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={()=>navigation.navigate('UpdateProfile')} style={styles.profileColumn}>
                     <Image source={EditImg} style={styles.iconImg} />
@@ -182,7 +184,7 @@ const ProfileScreen = () => {
                 <View style={styles.boxContent}>
                 <Image source={DownloadDarkImg} style={styles.boxIcon} />
                   <Text style={styles.boxValue}>{userEventData?.downloads}</Text>
-                  <Text style={styles.boxLabel}>Total Download</Text>
+                  <Text style={styles.boxLabel}>{t.totalDownload}</Text>
                 </View>
               </View>
               <View style={[styles.box, { backgroundColor: colors.secondaryBox }]}>

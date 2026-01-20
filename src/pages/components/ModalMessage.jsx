@@ -3,9 +3,11 @@ import { CrossImg, DownloadingImg } from '../assets';
 import colors from '../../constants/color';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from '../../hooks/useTranslation';
 const { width, height } = Dimensions.get("window");
 
 const ModalMessage = ({closeModal, message}) => {
+    const { t } = useTranslation();
     const navigation = useNavigation()
     return (
         <Modal visible={true} transparent animationType="slide">
@@ -20,7 +22,7 @@ const ModalMessage = ({closeModal, message}) => {
               loop
               style={{ width: 40, height: 40 }}
             /> */}
-            <Text style={styles.headingText}>Your selected images have been zipped successfully. Download Path : -</Text>
+            <Text style={styles.headingText}>{t.downloadSuccess || 'Your selected images have been zipped successfully. Download Path : -'}</Text>
             <Text style={styles.subTitle}>
             {message}
             </Text>
@@ -35,7 +37,7 @@ const ModalMessage = ({closeModal, message}) => {
               <TouchableOpacity
               onPress={() => closeModal()}
                style={{ ...styles.link, backgroundColor: colors.primary, borderRadius: 5, height: 40 }}>
-                <Text style={{ color: 'white' }}>Okay</Text>
+                <Text style={{ color: 'white' }}>{t.ok}</Text>
               </TouchableOpacity>
             </View>
           </View>

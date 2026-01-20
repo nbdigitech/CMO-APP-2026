@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvents, searchEvent } from '../../redux/actions/EventAction';
 import { openFilter } from '../../redux/reducers/filterReducer';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 const ListCard = ({item}) => {
@@ -52,6 +53,7 @@ const ListCard = ({item}) => {
 
 
 const SearchEventScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [text, setText] = useState('')
   const [suggestions, setSuggestions] = useState([]);
@@ -87,7 +89,7 @@ const SearchEventScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header screen='Search' />
+      <Header screen={t.searchScreen} />
         <View style={commonStyle.section}>
         <View style={styles.headerSection}>
           <TextInput 
@@ -127,7 +129,7 @@ const SearchEventScreen = () => {
         {
         event?.eventsList?.length == 0 &&
         <View style={commonStyle.notAvailableText}>
-          <Text>No result found</Text>
+          <Text>{t.noResult}</Text>
         </View>
       }
     </SafeAreaView>

@@ -9,17 +9,19 @@ import commonStyle from '../components/Style';
 import { Banner1Img, Share2Img, ShareImg } from '../assets';
 const { width, height } = Dimensions.get("window");
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 
 
 
 const EventCornerDetailsScreen = (props) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header screen='Event Corner' />
+      <Header screen={t.eventCorner} />
        <View style={{flex:1, padding:10}}>
         <Image source={{uri:props.route.params.eventCornerDetails.image}} style={{width:'100%', height:200, borderRadius:20}} />
         <View style={{marginTop:20}}>
@@ -45,7 +47,7 @@ const EventCornerDetailsScreen = (props) => {
         }
       }}
       style={{backgroundColor:colors.border, padding:15, flexDirection:'row', position:'absolute', bottom:0, width:'100%'}}>
-        <Text style={{color:'black', fontWeight:'bold'}}>Share Now </Text>
+        <Text style={{color:'black', fontWeight:'bold'}}>{t.share} </Text>
         <Image source={Share2Img} style={{width:17, height:17}} />
       </TouchableOpacity> */}
     </SafeAreaView>

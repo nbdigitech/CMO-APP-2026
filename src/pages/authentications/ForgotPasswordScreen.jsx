@@ -21,7 +21,7 @@ const ForgotPasswordScreen = () => {
             <View style={commonStyle.contentBox}>
                 <View style={commonStyle.section}>
                 <Text style={styles.title}>AI Based CMO Gallery</Text>
-                <Text style={styles.subTitle}>On Click Download</Text>
+                <Text style={styles.subTitle}>{t.onClickDownload}</Text>
                 </View>
 
                 <View style={commonStyle.dividerContainer}>

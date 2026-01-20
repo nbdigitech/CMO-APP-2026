@@ -17,7 +17,7 @@ import commonStyle from '../components/Style';
 import ImageCard from '../components/ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDistricts, getEvents } from '../../redux/actions/EventAction';
-import { Banner1Img, Banner2Img, Banner3Img, FilterImg, BgImportantLink, CrossImg, BgYouTubeIcon, BackArrowImg, PlayImg } from '../assets';
+import { Banner1Img, Banner2Img, Banner3Img, FilterImg, BgImportantLink, CrossImg, BgYouTubeIcon, BackArrowImg, PlayImg, YouTubeIconelogo } from '../assets';
 import LoaderScreen from '../components/LoaderScreen';
 import MasonryList from '@react-native-seoul/masonry-list';
 import { openFilter } from '../../redux/reducers/filterReducer';
@@ -31,6 +31,7 @@ import { getVideo, getVideoLive } from '../../redux/actions/VideoAction';
 import { getEventCorner } from '../../redux/actions/EventCornerAction';
 import WarningModalJanPatrika from '../components/WarningModelJanPatrika';
 import WarningModalImportantLink from '../components/WarningModalImportantLink';
+import { dashboardTranslations } from '../../locales/dashboardTranslations';
 
 
 const { width, height } = Dimensions.get("window");
@@ -89,6 +90,7 @@ const MyCarousel = () => {
 
 
 const DashboardScreen = () => {
+
   const [image, setImage] = useState(null);
   const [modalOpen, setModalOpen] = useState(false)
   const [message, setMessage] = useState("")
@@ -107,6 +109,8 @@ const DashboardScreen = () => {
   const [videoId, setVideoId] = useState("");
   const playerRef = useRef(null);
   const dispatch = useDispatch();
+  const language = useSelector(state => state.language.language);
+  const t = dashboardTranslations[language] || dashboardTranslations.EN;
   useEffect(()=>{
     dispatch(getStories({}))
     dispatch(getNotice({}))
@@ -154,13 +158,13 @@ const filterHandle = () => {
 
 const downloadProcess = (key, path = "") => {
   if(key){
-  setMessage("Your Image is downloading")
-  setMessage2("Please Wait...")
+  setMessage(t.yourImageDownloading)
+  setMessage2(t.pleaseWait)
   setDownloadLoader(true)
   }
   else{
   setMessage("")
-  setMessage2("Loading event list...")
+  setMessage2(t.loadingEventList)
   setDownloadLoader(false)
   setModalOpen(true)
   setPath(path)
@@ -201,7 +205,7 @@ useEffect(() => {
               </View> */}
               <View style={{padding:10}}>
                 <View>
-                <Text style={{fontWeight:'bold', fontSize:16,  marginLeft:10, paddingBottom:10}}>Stories</Text>
+                <Text style={{fontWeight:'bold', fontSize:16,  marginLeft:10, paddingBottom:10}}>{t.stories}</Text>
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} >
             {stories.storyList?.map((value, index) => (
@@ -229,13 +233,13 @@ useEffect(() => {
             <View>
               <View style={styles.heading}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold', width:'50%' }}>
-                  Event Corner
+                  {t.eventCorner}
                 </Text>
                 <View style={{width:"50%", alignItems:"flex-end", justifyContent:"center"}}>
                 <View style={{flexDirection:"row",}}>
                
                 <TouchableOpacity style={{position:'relative'}} onPress={() => navigation.navigate('EventCornerScreen')}>
-                 <Text>View All</Text>
+                 <Text>{t.viewAll}</Text>
                 </TouchableOpacity>
                 </View>
               </View>
@@ -256,28 +260,31 @@ useEffect(() => {
             </View>
 
      {video?.videoLiveList?.length != 0 &&             
-      <View>
-      <View style={{ flexDirection: 'row', width: width, paddingTop:40, marginBottom:10 }}>
-        <View style={{ width: '30%', alignItems: 'flex-end' }}>
-          <Image source={BgYouTubeIcon} style={{ width: '100%', height: 20 }} />
+      <TouchableOpacity onPress={() => navigation.navigate('YoutubeLiveScreen') } style={{marginVertical: 20, marginHorizontal: 10}}>
+        <View style={{ 
+         borderTopWidth: 1,
+         borderBottomWidth: 1,
+         borderColor: '#7a7a7a',
+          paddingVertical: 20,
+          paddingHorizontal: 20
+        }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, paddingRight:20 }}>
+              <View style={{ width: 25, height: 25, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={YouTubeIconelogo} style={{ width: '100%', height: '100%', resizeMode: 'contain',  }} />
+              </View>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1f1f1f' }}>
+                YouTube
+              </Text>
+            </View>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000', letterSpacing: 0.5,textDecorationLine:'underline',textDecorationColor:'#767373' }}>
+              {t.youtubeWatchLive}
+            </Text>
+          </View>
         </View>
-        <View style={{ width: '70%' }}>
-          <Text style={{ color: colors.primary, fontSize: 16, fontWeight: 'bold' }}>
-            Youtube upcoming event Live!
-          </Text>
-        </View>
-      </View>
 
-      <View style={{padding:10, borderRadius:20}}>
-      <YoutubePlayer
-        ref={playerRef}
-        height={200}
-        play={false}
-        videoId={video?.videoLiveList?.[0]?.link?.split("/").filter(Boolean).pop()} 
-        
-      />
-      </View>
-      </View>
+       
+      </TouchableOpacity>
       }
      
 
@@ -286,7 +293,7 @@ useEffect(() => {
               
               <View style={styles.heading}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold', width:'50%' }}>
-                  Photo Gallery
+                  {t.photoGallery}
                 </Text>
                 <View style={{width:"50%", alignItems:"flex-end", justifyContent:"center"}}>
                 <View style={{flexDirection:"row",}}>
@@ -296,7 +303,7 @@ useEffect(() => {
                 </TouchableOpacity> */}
 
                 <TouchableOpacity onPress={() => navigation.navigate('PhotoGalleryScreen')}>
-                        <Text>View All</Text>
+                        <Text>{t.viewAll}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -315,7 +322,7 @@ useEffect(() => {
             setActiveTab("Tab1")
           }}
         >
-          <Text style={[styles.tabText, activeTab === "Tab1" && styles.activeTabText]}>All Event</Text>
+          <Text style={[styles.tabText, activeTab === "Tab1" && styles.activeTabText]}>{t.allEvent}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -325,7 +332,7 @@ useEffect(() => {
             setActiveTab("Tab2")
           }}
         >
-          <Text style={[styles.tabText, activeTab === "Tab2" && styles.activeTabText]}>CM Events</Text>
+          <Text style={[styles.tabText, activeTab === "Tab2" && styles.activeTabText]}>{t.cmEvents}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tab, activeTab === "Tab3" && styles.activeTab]}
@@ -334,7 +341,7 @@ useEffect(() => {
             setActiveTab("Tab3")
           }}
         >
-          <Text style={[styles.tabText, activeTab === "Tab3" && styles.activeTabText]}>Others</Text>
+          <Text style={[styles.tabText, activeTab === "Tab3" && styles.activeTabText]}>{t.others}</Text>
         </TouchableOpacity>
       </View>
 
@@ -355,13 +362,13 @@ useEffect(() => {
       <View>
               <View style={styles.heading}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold', width:'50%' }}>
-                  Video Gallery
+                  {t.videoGallery}
                 </Text>
                 <View style={{width:"50%", alignItems:"flex-end", justifyContent:"center"}}>
                 <View style={{flexDirection:"row",}}>
                
                 <TouchableOpacity style={{position:'relative'}} onPress={() => navigation.navigate('VideoGalleryScreen')}>
-                 <Text>View All</Text>
+                 <Text>{t.viewAll}</Text>
                 </TouchableOpacity>
                 </View>
               </View>
@@ -393,20 +400,20 @@ useEffect(() => {
     style={{flex: 1,  width: '100%', paddingVertical:50, marginVertical:20, height: 320,}} 
     imageStyle={{resizeMode: 'cover'}}
     >
-      <Text style={{marginTop:-10, paddingLeft:20, color:'black', fontWeight:'bold', fontSize:16}}>Important Link</Text>
+      <Text style={{marginTop:-10, paddingLeft:20, color:'black', fontWeight:'bold', fontSize:16}}>{t.importantLink}</Text>
       <VerticalMarquee headlines={notice.noticeList} />
     </ImageBackground>
 
     <View>
           <View style={styles.heading}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold', width:'50%' }}>
-                  Janman Patrika
+                  {t.janPatrika}
                 </Text>
                 <View style={{width:"50%", alignItems:"flex-end", justifyContent:"center"}}>
                 <View style={{flexDirection:"row",}}>
                
                 <TouchableOpacity style={{position:'relative'}} onPress={() => navigation.navigate('JanPatrikaScreen')}>
-                 <Text>View All</Text>
+                 <Text>{t.viewAll}</Text>
                 </TouchableOpacity>
                 </View>
               </View>

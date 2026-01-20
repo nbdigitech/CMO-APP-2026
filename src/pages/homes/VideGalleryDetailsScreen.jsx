@@ -12,11 +12,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvents, searchEvent } from '../../redux/actions/EventAction';
 import { openFilter } from '../../redux/reducers/filterReducer';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 
 
 const VideoGalleryDetailsScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [text, setText] = useState('')
   const [suggestions, setSuggestions] = useState([]);
@@ -41,7 +43,7 @@ const VideoGalleryDetailsScreen = () => {
         {
         event?.eventsList?.length == 0 &&
         <View style={commonStyle.notAvailableText}>
-          <Text>No result found</Text>
+          <Text>{t.noResult}</Text>
         </View>
       }
     </SafeAreaView>

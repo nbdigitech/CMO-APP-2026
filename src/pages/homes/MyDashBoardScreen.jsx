@@ -14,11 +14,13 @@ import { removeBadge } from '../../redux/reducers/EventReducer';
 import { downloadAndZipImages } from '../../utils/zipCreate';
 import LoaderScreen from '../components/LoaderScreen';
 import ModalMessage from '../components/ModalMessage';
+import { useTranslation } from '../../hooks/useTranslation';
 const { width, height } = Dimensions.get("window");
 
 const MyDashboardScreen = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch()
-  const [message, setMessage] = useState("Downloads list is loading...")
+  const [message, setMessage] = useState(t.downloadLoading || "Downloads list is loading...")
   const [message2, setMessage2] = useState("Please wait...");
   const [downloadLoader, setDownloadLoader] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -85,7 +87,7 @@ const MyDashboardScreen = () => {
                   // padding:5, 
                   // justifyContent:'center'
                   }}>
-                    <Text style={styles.viewMore}> Downloaded </Text>
+                    <Text style={styles.viewMore}> {t.downloaded} </Text>
                     <View style={{width:78, marginTop:-2, marginLeft:4, height:1, backgroundColor:'#686868'}}></View>
                     {/* <Image source={DownloadImg} style={{width:25, height:25}} /> */}
                   </TouchableOpacity>
@@ -95,7 +97,7 @@ const MyDashboardScreen = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <Header screen='My Downloads' />
+      <Header screen={t.myDownloads} />
         <View style={{...commonStyle.section}}>
             <FlatList
             data={userDownloadHistory}
@@ -107,7 +109,7 @@ const MyDashboardScreen = () => {
         </View>
         {userDownloadHistory.length == 0 &&
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-             <Text>No download history</Text>
+             <Text>{t.noDownloadHistory}</Text>
         </View>
          }
 

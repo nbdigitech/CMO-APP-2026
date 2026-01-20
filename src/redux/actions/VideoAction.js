@@ -27,6 +27,7 @@ export const getVideoLive = createAsyncThunk(
                     Accept: 'application/json',
                   }
             })
+            console.log("response live video",response.data)
             return response.data
         }
         catch(error){

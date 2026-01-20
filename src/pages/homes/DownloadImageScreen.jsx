@@ -4,8 +4,10 @@ import colors from '../../constants/color'
 import { CGMapImg, BackWImg, EditImg, DownloadDarkImg, uploadImg } from '../assets'
 import MasonryList from '@react-native-seoul/masonry-list';
 import { useState } from 'react';
+import { useTranslation } from '../../hooks/useTranslation';
 const {width, height} = Dimensions.get("window")
 const DownloadImageScreen = () => {
+    const { t } = useTranslation();
     
     const data = [
         {id:1,uri:"https://indiacsr.in/wp-content/uploads/2024/01/Vishnu-Deo-Sai-Chief-Minister-of-Chhattisgarh-_IndiaCSR.jpg", height:200},
@@ -27,7 +29,7 @@ const DownloadImageScreen = () => {
                     </View>
                     <View style={{...styles.headerColum, alignItems:"center"}}>
                     <TouchableOpacity>
-                        <Text style={styles.headerText}>Profile</Text>
+                        <Text style={styles.headerText}>{t.profile || 'Profile'}</Text>
                     </TouchableOpacity>
                     </View>
                     <View style={{...styles.headerColum, alignItems:"flex-end"}}>

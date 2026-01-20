@@ -25,7 +25,7 @@ const MobileRegisterScreen = () => {
             <View style={commonStyle.contentBox}>
                 <View style={commonStyle.section}>
                 <Text style={styles.title}>AI Based CMO Gallery</Text>
-                <Text style={styles.subTitle}>On Click Download</Text>
+                <Text style={styles.subTitle}>{t.onClickDownload}</Text>
                 </View>
 
                 <GoogleSignIn />
@@ -52,7 +52,7 @@ const MobileRegisterScreen = () => {
 
                 <View style={commonStyle.section}>
                 <View style={styles.registerPrompt}>
-                        <Text style={commonStyle.questionText}>Already Registered? </Text>
+                        <Text style={commonStyle.questionText}>{t.alreadyRegistered} </Text>
                         <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
                             <Text style={commonStyle.linkText}>Sign In</Text>
                         </TouchableOpacity>

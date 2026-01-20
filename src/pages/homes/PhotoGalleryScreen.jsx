@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEvents, searchEvent } from '../../redux/actions/EventAction';
 import { openFilter } from '../../redux/reducers/filterReducer';
 import ImageCard from '../components/ImageCard';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 
@@ -20,6 +21,7 @@ import ImageCard from '../components/ImageCard';
 
 
 const PhotoGalleryScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [text, setText] = useState('')
   const [suggestions, setSuggestions] = useState([]);
@@ -56,7 +58,7 @@ const PhotoGalleryScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header screen='Photo Gallery' filterHandle={filterHandle} />
+      <Header screen={t.photoGallery} filterHandle={filterHandle} />
 
       <View style={styles.tabRow}>
         <TouchableOpacity
@@ -66,7 +68,7 @@ const PhotoGalleryScreen = () => {
             setActiveTab("Tab1")
           }}
         >
-          <Text style={[styles.tabText, activeTab === "Tab1" && styles.activeTabText]}>All Event</Text>
+          <Text style={[styles.tabText, activeTab === "Tab1" && styles.activeTabText]}>{t.allEvent}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -76,7 +78,7 @@ const PhotoGalleryScreen = () => {
             setActiveTab("Tab2")
           }}
         >
-          <Text style={[styles.tabText, activeTab === "Tab2" && styles.activeTabText]}>CM Events</Text>
+          <Text style={[styles.tabText, activeTab === "Tab2" && styles.activeTabText]}>{t.cmEvents}</Text>
         </TouchableOpacity>
 
 
@@ -87,7 +89,7 @@ const PhotoGalleryScreen = () => {
             setActiveTab("Tab3")
           }}
         >
-          <Text style={[styles.tabText, activeTab === "Tab3" && styles.activeTabText]}>Others</Text>
+          <Text style={[styles.tabText, activeTab === "Tab3" && styles.activeTabText]}>{t.others}</Text>
         </TouchableOpacity>
       </View>
       
@@ -99,7 +101,7 @@ const PhotoGalleryScreen = () => {
         {
         event?.eventsList?.length == 0 &&
         <View style={commonStyle.notAvailableText}>
-          <Text>No result found</Text>
+          <Text>{t.noResult || 'No result found'}</Text>
         </View>
       }
     </SafeAreaView>

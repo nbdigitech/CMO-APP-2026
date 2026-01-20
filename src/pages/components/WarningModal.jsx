@@ -4,9 +4,11 @@ import colors from '../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { downloadTrigger, resetDownloadTrigger } from '../../redux/reducers/EventReducer';
+import { useTranslation } from '../../hooks/useTranslation';
 const { width, height } = Dimensions.get("window");
 
 const WarningModal = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch()
     const navigation = useNavigation()
     return (
@@ -17,21 +19,20 @@ const WarningModal = () => {
               <Image source={CrossImg} style={{ width: 40, height: 40 }} />
             </TouchableOpacity>
           
-            <Text style={styles.headingText}>Are you sure ?</Text>
-            <Text> Proceeding will download all images related to this event to your device. 
-  You can cancel if you don’t want to continue.</Text>
+            <Text style={styles.headingText}>{t.warning}?</Text>
+            <Text> {t.warningDownloadMessage || 'Proceeding will download all images related to this event to your device. You can cancel if you don\'t want to continue.'}</Text>
             <View style={{ flexDirection: 'row', marginTop: 20, width: '100%', justifyContent: 'space-around' }}>
              
               <TouchableOpacity
               onPress={() => dispatch(resetDownloadTrigger())}
                style={{ ...styles.link, backgroundColor: colors.border, borderRadius: 5, height: 40,  }}>
-                <Text>Cancel</Text>
+                <Text>{t.cancel}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
               onPress={() => dispatch(downloadTrigger())}
                style={{ ...styles.link, backgroundColor: colors.primary, borderRadius: 5, height: 40 }}>
-                <Text style={{ color: 'white' }}>Yes To Proceed</Text>
+                <Text style={{ color: 'white' }}>{t.yesToProceed || 'Yes To Proceed'}</Text>
               </TouchableOpacity>
             </View>
           </View>

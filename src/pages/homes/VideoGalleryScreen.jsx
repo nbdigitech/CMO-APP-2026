@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEvents, searchEvent } from '../../redux/actions/EventAction';
 import { openFilter } from '../../redux/reducers/filterReducer';
 import { getVideo } from '../../redux/actions/VideoAction';
+import { useTranslation } from '../../hooks/useTranslation';
 
 
 const ListCard = ({item}) => {
@@ -47,6 +48,7 @@ const ListCard = ({item}) => {
 
 
 const VideoGalleryScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [text, setText] = useState('')
   const [suggestions, setSuggestions] = useState([]);
@@ -70,7 +72,7 @@ const VideoGalleryScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header screen='Video Gallery' />
+      <Header screen={t.videoGallery} />
         <View style={{...commonStyle.section, paddingVertical:0}}>
           {text.length > 0 && (
           <View style={styles.suggestionBox}>
@@ -98,7 +100,7 @@ const VideoGalleryScreen = () => {
         {
         video?.videoList?.length == 0 &&
         <View style={commonStyle.notAvailableText}>
-          <Text>No result found</Text>
+          <Text>{t.noResult}</Text>
         </View>
       }
     </SafeAreaView>

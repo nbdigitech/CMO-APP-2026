@@ -10,6 +10,7 @@ export const getStories = createAsyncThunk(
                     Accept: 'application/json',
                   }
             })
+            console.log("Story Response:", response.data);
             return response.data
         }
         catch(error){

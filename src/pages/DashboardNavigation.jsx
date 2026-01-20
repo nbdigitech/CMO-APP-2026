@@ -18,11 +18,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import UpdateProfile from './homes/UpdateProfile';
 import LoaderScreen from './components/LoaderScreen';
 import { useSelector } from 'react-redux'; // 👈 Redux selector
+import { useTranslation } from '../hooks/useTranslation';
 import EventCornerScreen from './homes/EventCornerScreen';
 import JanPatrikaScreen from './homes/JanPatrikaScreen';
 import JanPatrikaDetailsScreen from './homes/JanPatrikaDetailsScreen';
 import PhotoGalleryScreen from './homes/PhotoGalleryScreen';
 import VideoGalleryScreen from './homes/VideoGalleryScreen';
+import YoutubeLiveScreen from './homes/YoutubeLiveScreen';
 
 const BottomStack = createBottomTabNavigator();
 const { width } = Dimensions.get('window');
@@ -32,6 +34,8 @@ const Stack = createNativeStackNavigator();
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   // const downloadCount = useSelector(state => state.download.newCount); // 👈 adjust if needed
   const badgeCount = useSelector(state=>state.event.userDownloadViewLeft)
+  const { t } = useTranslation();
+  
   const icons = [
     { default: HomeWhiteImg, active: HomeDarkImg },
     { default: SearchImg, active: SerachDarkImg },
@@ -39,8 +43,8 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
     { default: DownNavImg, active: DownloadDarkImg },
     { default: ProfileNavImg, active: ProfileDarkImg }
   ];
-
-  const labels = ['Home', 'Search', 'Upload', 'My Download', 'Profile'];
+  
+  const labels = [t.home, t.searchTab, t.uploadTab, t.myDownload, t.profileTab];
 
   return (
     <View style={styles.tabBar}>
@@ -118,6 +122,7 @@ const DashboardNavigation = () => {
       <Stack.Screen name="PhotoGalleryScreen" component={PhotoGalleryScreen} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="LoaderScreen" component={LoaderScreen} />
+   <Stack.Screen name="YoutubeLiveScreen" component={YoutubeLiveScreen} />
     </Stack.Navigator>
   );
 };

@@ -9,6 +9,7 @@ import NoticeReducer from "./NoticeReducer";
 import PatrikaReducer from "./PatrikaReducer";
 import VideoReducer from "./VideoReducer";
 import EventCornerReducer from "./EventCornerReducer";
+import languageReducer from "./languageReducer";
 
 const rootReducer = combineReducers({
     login:loginReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     notice:NoticeReducer,
     patrika:PatrikaReducer,
     video:VideoReducer,
-    eventCorner:EventCornerReducer
+    eventCorner:EventCornerReducer,
+    language:languageReducer
 })
 
 export default rootReducer
