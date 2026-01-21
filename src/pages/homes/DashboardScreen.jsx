@@ -98,7 +98,8 @@ const DashboardScreen = () => {
   const [downloadLoader, setDownloadLoader] = useState(false)
   const [localWarningCheck, setLocalWarningCheck] = useState(false)
   const [visible, setVisible] = useState(false)
-  const [storyImage, setStoryImage] = useState('')
+  const [storyImage, setStoryImage] = useState([])
+  const [storyImageIndex, setStoryImageIndex] = useState(0)
   const [path, setPath] = useState("")
   const [copy, setCopy] = useState(false)
   const [title, setTitle] = useState("")
@@ -207,28 +208,48 @@ useEffect(() => {
                 <View>
                 <Text style={{fontWeight:'bold', fontSize:16,  marginLeft:10, paddingBottom:10}}>{t.stories}</Text>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{height:100}}>
-            {stories?.storyList && stories.storyList.length > 0 ? stories.storyList.map((value, index) => (
-              <View key={index}>
-                <TouchableOpacity onPress={() => {
-                  setVisible(true)
-                  setStoryImage(value?.image)
-                  setTitle(value?.title)
-                }} style={{borderWidth:1,
-                    borderColor:colors.primary, marginLeft:10, width:70, height:70, borderRadius:50, padding:2}}>
-                  <Image source={{uri:value?.image}} style={{width:"100%", 
-                    borderRadius:50,
-                    
-                    height:"100%"}} />
-                    
-                </TouchableOpacity>
-                <Text style={{fontSize:12, alignSelf:'center', paddingLeft:5}}>{value?.title?.substring(0,8)}</Text>
-                </View>
-            )) : <Text style={{padding:10}}>No stories available</Text>
-          }
-                
-               
-              </ScrollView>
+             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ height: 100 }}>
+  {stories?.storyList && stories.storyList.length > 0 ? (
+    stories.storyList.map((value, index) => (
+      <View key={index}>
+        <TouchableOpacity
+          onPress={() => {
+            setVisible(true);
+            setStoryImage(value?.images); // 👈 pass ALL images
+            setStoryImageIndex(0); // 👈 start from first image
+            setTitle(value?.title);
+          }}
+          style={{
+            borderWidth: 1,
+            borderColor: colors.primary,
+            marginLeft: 10,
+            width: 70,
+            height: 70,
+            borderRadius: 50,
+            padding: 2,
+          }}
+        >
+          <Image
+            source={{ uri: value?.images?.[0] }} // ✅ FIRST IMAGE
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: 50,
+              backgroundColor: "#eee",
+            }}
+          />
+        </TouchableOpacity>
+
+        <Text style={{ fontSize: 12, alignSelf: "center", paddingLeft: 5 }}>
+          {value?.title?.substring(0, 8)}
+        </Text>
+      </View>
+    ))
+  ) : (
+    <Text style={{ padding: 10 }}>No stories available</Text>
+  )}
+</ScrollView>
+
               </View>
             <View>
               <View style={styles.heading}>
@@ -456,11 +477,85 @@ useEffect(() => {
         onRequestClose={() => setVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <TouchableOpacity style={{...styles.closeArea, position:'absolute', top:20, left:10}} onPress={() => setVisible(false)} >
+          {/* Close Button */}
+          <TouchableOpacity style={{position:'absolute', top:20, left:10, zIndex:20}} onPress={() => setVisible(false)}>
               <Image source={BackArrowImg} style={{width:30, height:30}} />
             </TouchableOpacity>
-          <Image source={{ uri: storyImage }} style={styles.fullImage} resizeMode="contain" />
-          <Text style={{color:'black', position:'absolute', bottom:10, left:10, fontWeight:'bold'}}>{title}</Text>
+          
+          {/* Display Current Image with FlatList for smooth scrolling */}
+          {Array.isArray(storyImage) && storyImage.length > 0 ? (
+            <>
+              {/* FlatList for smooth horizontal scrolling */}
+              <FlatList
+                ref={ref => {
+                  if (ref && storyImageIndex !== undefined) {
+                    ref.scrollToIndex({ index: storyImageIndex, animated: false });
+                  }
+                }}
+                data={storyImage}
+                renderItem={({ item, index }) => (
+                  <View style={{ width: width, height: height, justifyContent: 'center', alignItems: 'center', }}>
+                    <Image 
+                      source={{ uri: item }} 
+                      style={{ width: '100%', height: '100%' }} 
+                      resizeMode="contain"
+                      onError={(error) => console.log("Image load error at index", index, error)}
+                    />
+                  </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                pagingEnabled
+                scrollEventThrottle={16}
+                onMomentumScrollEnd={(event) => {
+                  const contentOffsetX = event.nativeEvent.contentOffset.x;
+                  const currentIndex = Math.round(contentOffsetX / width);
+                  setStoryImageIndex(currentIndex);
+                }}
+                scrollEnabled={storyImage.length > 1}
+              />
+              
+              {/* Previous Button */}
+              {storyImage.length > 1 && (
+                <TouchableOpacity 
+                  style={{position:'absolute', left:15, top:'50%', zIndex:15}}
+                  onPress={() => {
+                    const newIndex = storyImageIndex === 0 ? storyImage.length - 1 : storyImageIndex - 1;
+                    setStoryImageIndex(newIndex);
+                  }}
+                >
+                  <Text style={{fontSize:35, color:'white', fontWeight:'bold', textShadowColor: '#000', textShadowOffset: {width: 1, height: 1}, textShadowRadius: 3}}>{"‹"}</Text>
+                </TouchableOpacity>
+              )}
+              
+              {/* Next Button */}
+              {storyImage.length > 1 && (
+                <TouchableOpacity 
+                  style={{position:'absolute', right:15, top:'50%', zIndex:15}}
+                  onPress={() => {
+                    const newIndex = storyImageIndex === storyImage.length - 1 ? 0 : storyImageIndex + 1;
+                    setStoryImageIndex(newIndex);
+                  }}
+                >
+                  <Text style={{fontSize:35, color:'white', fontWeight:'bold', textShadowColor: '#000', textShadowOffset: {width: 1, height: 1}, textShadowRadius: 3}}>{"›"}</Text>
+                </TouchableOpacity>
+              )}
+              
+              {/* Image Counter */}
+              {storyImage.length > 1 && (
+                <Text style={{color:'white', position:'absolute', top:60, alignSelf:'center', fontWeight:'bold', fontSize:14, backgroundColor:'rgba(0,0,0,0.5)', paddingHorizontal:10, paddingVertical:5, borderRadius:5}}>
+                  {storyImageIndex + 1} / {storyImage.length}
+                </Text>
+              )}
+            </>
+          ) : (
+            <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+              <Text style={{color:'white', fontSize:16}}>No images available</Text>
+            </View>
+          )}
+          
+          {/* Title */}
+          <Text style={{color:'white', position:'absolute', bottom:10, left:10, fontWeight:'bold', backgroundColor:'rgba(0,0,0,0.5)', paddingHorizontal:10, paddingVertical:5, borderRadius:5}}>{title}</Text>
         </View>
       </Modal>
   </View>

@@ -37,12 +37,17 @@ const Header = (props) => {
     EN: {
       dashboard: 'CMO AI Photo Gallery',
       logout: 'Logout',
+      profile: 'Profile',
     },
     HI: {
       dashboard: 'सीएमओ एआई फोटो गैलरी',
       logout: 'लॉगआउट',
+      profile: 'प्रोफाइल',
     },
   };
+
+  // 🔹 Check if this is Profile screen (works with both EN and HI names)
+  const isProfileScreen = props.screen === 'Profile' || props.screen === TEXT.EN.profile || props.screen === TEXT.HI.profile;
 
   const handleLogout = async () => {
     try {
@@ -63,7 +68,7 @@ const Header = (props) => {
     <View
       style={[
         styles.header,
-        { backgroundColor: props.screen === 'Profile' ? colors.primary : 'white' },
+        { backgroundColor: isProfileScreen ? colors.primary : 'white' },
       ]}
     >
       <View style={{ ...styles.headerColumn, flexDirection: 'row', width: '100%' }}>
@@ -80,7 +85,7 @@ const Header = (props) => {
           <View style={{ flexDirection: 'row', width: '100%' }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image
-                source={props.screen === 'Profile' ? BackWImg : BackArrowImg}
+                source={isProfileScreen ? BackWImg : BackArrowImg}
                 style={styles.backImg}
               />
             </TouchableOpacity>
@@ -88,7 +93,7 @@ const Header = (props) => {
             <Text
               style={[
                 styles.searchText,
-                { color: props.screen === 'Profile' ? 'white' : 'black' },
+                { color: isProfileScreen ? 'white' : 'black' },
               ]}
             >
               {props.screen}
@@ -104,7 +109,7 @@ const Header = (props) => {
           </View>
         )}
 
-        {props.screen === 'Profile' && (
+        {isProfileScreen && (
           <View style={styles.rightSection}>
             <TouchableOpacity style={{ flexDirection: 'row' }} onPress={handleLogout}>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>
@@ -116,21 +121,23 @@ const Header = (props) => {
         )}
       </View>
 
-      {/* 🔹 TAB STYLE EN–HI SWITCHER */}
-      <View style={styles.langTabContainer}>
-        <TouchableOpacity
-          onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: 'EN' })}
-          style={[styles.langTab, language === 'EN' && styles.langTabActive]}
-        >
-          <Text style={[styles.langTabText, language === 'EN' ? styles.langTabTextActive : styles.langTabTextInactive]}>EN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: 'HI' })}
-          style={[styles.langTab, language === 'HI' && styles.langTabActive]}
-        >
-          <Text style={[styles.langTabText, language === 'HI' ? styles.langTabTextActive : styles.langTabTextInactive]}>HI</Text>
-        </TouchableOpacity>
-      </View>
+      {/* 🔹 TAB STYLE EN–HI SWITCHER - ONLY ON DASHBOARD */}
+      {props.screen === 'DashboardScreen' && (
+        <View style={styles.langTabContainer}>
+          <TouchableOpacity
+            onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: 'EN' })}
+            style={[styles.langTab, language === 'EN' && styles.langTabActive]}
+          >
+            <Text style={[styles.langTabText, language === 'EN' ? styles.langTabTextActive : styles.langTabTextInactive]}>EN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: 'HI' })}
+            style={[styles.langTab, language === 'HI' && styles.langTabActive]}
+          >
+            <Text style={[styles.langTabText, language === 'HI' ? styles.langTabTextActive : styles.langTabTextInactive]}>HI</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

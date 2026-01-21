@@ -7,50 +7,49 @@ import {useEffect} from 'react';
 import commonStyle from '../components/Style';
 import Footer from '../components/Footer';
 import GoogleSignIn from '../components/GoogleSignIn';
-import { useTranslation } from '../../hooks/useTranslation';
+
 const RegisterScreen = () => {
-    const { t } = useTranslation();
     const navigation = useNavigation();
     return (
         <SafeAreaView style={styles.container}>
             <View style={commonStyle.contentBox}>
                 <View style={commonStyle.section}>
                 <Text style={styles.title}>AI Based CMO Gallery</Text>
-                <Text style={styles.subTitle}>{t.onClickDownload}</Text>
+                <Text style={styles.subTitle}>On Click Download</Text>
                 </View>
                 <GoogleSignIn />
 
                 <View style={commonStyle.dividerContainer}>
                     <View style={{...commonStyle.hr, width:"20%"}}></View>
-                    <View style={commonStyle.centerText}><Text>{t.signUpMobile || 'Or Sign Up With Mobile'}</Text></View>
+                    <View style={commonStyle.centerText}><Text>Or Sign Up With Mobile</Text></View>
                     <View style={{...commonStyle.hr, width:"20%"}}></View>
                 </View>
 
                 <View style={commonStyle.section}>
-                    <TextInput placeholderTextColor="#888" placeholder={t.name} style={commonStyle.textInput} />
+                    <TextInput placeholderTextColor="#888" placeholder="Name" style={commonStyle.textInput} />
                 </View>
 
                 <View style={commonStyle.section}>
-                    <TextInput placeholderTextColor="#888" placeholder={t.mobileNumber} style={commonStyle.textInput} />
+                    <TextInput placeholderTextColor="#888" placeholder="Mobile Number" style={commonStyle.textInput} />
                 </View>
 
 
                 <View style={commonStyle.section}>
-                    <TextInput placeholderTextColor="#888"  placeholder={t.createPassword || 'Create Your Password'} style={commonStyle.textInput} />
-                    <Text style={commonStyle.errorMessage}>{t.invalidPassword}</Text>
+                    <TextInput placeholderTextColor="#888"  placeholder="Create Your Password" style={commonStyle.textInput} />
+                    <Text style={commonStyle.errorMessage}>Please enter valid password</Text>
                 </View>
 
                 <View style={commonStyle.section}>
                 <TouchableOpacity  style={commonStyle.submitBtn}>
-                            <Text style={styles.btnText}>{t.signup}</Text>
+                            <Text style={styles.btnText}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={commonStyle.section}>
                 <View style={styles.registerPrompt}>
-                        <Text style={commonStyle.questionText}>{t.alreadyRegistered || 'Already Registered? '} </Text>
+                        <Text style={commonStyle.questionText}>Already Registered?  </Text>
                         <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
-                            <Text style={commonStyle.linkText}>{t.login}</Text>
+                            <Text style={commonStyle.linkText}>Login</Text>
                         </TouchableOpacity>
                 </View>
                 </View>
