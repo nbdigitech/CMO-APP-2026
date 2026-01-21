@@ -116,15 +116,21 @@ const Header = (props) => {
         )}
       </View>
 
-      {/* 🔹 SINGLE EN–HI BUTTON */}
-      <TouchableOpacity
-        onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: language === 'EN' ? 'HI' : 'EN' })}
-        style={styles.langBtn}
-      >
-        <Text style={styles.langText}>
-          {language === 'EN' ? 'HI' : 'EN'}
-        </Text>
-      </TouchableOpacity>
+      {/* 🔹 TAB STYLE EN–HI SWITCHER */}
+      <View style={styles.langTabContainer}>
+        <TouchableOpacity
+          onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: 'EN' })}
+          style={[styles.langTab, language === 'EN' && styles.langTabActive]}
+        >
+          <Text style={[styles.langTabText, language === 'EN' ? styles.langTabTextActive : styles.langTabTextInactive]}>EN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => dispatch({ type: 'SET_LANGUAGE', payload: 'HI' })}
+          style={[styles.langTab, language === 'HI' && styles.langTabActive]}
+        >
+          <Text style={[styles.langTabText, language === 'HI' ? styles.langTabTextActive : styles.langTabTextInactive]}>HI</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -181,21 +187,36 @@ const styles = StyleSheet.create({
   },
 
   // 🔹 Language Button Styles
-  langBtn: {
+  langTabContainer: {
+    flexDirection: 'row',
     position: 'absolute',
     top: 15,
-    right: 15,
+    right: 50,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#FF7F02',
+  },
+  langTab: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-
-  langText: {
-    fontSize: 12,
+  langTabActive: {
+    backgroundColor: '#FF7F02',
+  },
+  langTabText: {
+    fontSize: 14,
     fontWeight: 'bold',
+  },
+  langTabTextActive: {
+    color: '#fff',
+  },
+  langTabTextInactive: {
+    color: '#000',
   },
 });
 

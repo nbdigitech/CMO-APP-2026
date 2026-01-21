@@ -207,8 +207,8 @@ useEffect(() => {
                 <View>
                 <Text style={{fontWeight:'bold', fontSize:16,  marginLeft:10, paddingBottom:10}}>{t.stories}</Text>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-            {stories.storyList?.map((value, index) => (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{height:100}}>
+            {stories?.storyList && stories.storyList.length > 0 ? stories.storyList.map((value, index) => (
               <View key={index}>
                 <TouchableOpacity onPress={() => {
                   setVisible(true)
@@ -224,7 +224,7 @@ useEffect(() => {
                 </TouchableOpacity>
                 <Text style={{fontSize:12, alignSelf:'center', paddingLeft:5}}>{value?.title?.substring(0,8)}</Text>
                 </View>
-            ))
+            )) : <Text style={{padding:10}}>No stories available</Text>
           }
                 
                
