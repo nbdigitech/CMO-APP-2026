@@ -20,7 +20,7 @@ const SplashScreen = () => {
             <ImageBackground source={SplashImg} style={styles.image}>
                 <View style={styles.section}>
                 <Image source={LogoImg} style={styles.logo} />
-                <Text style={styles.title}>CMO Gallery</Text>
+                <Text style={styles.title}>HAMAR CM</Text>
                 </View>
             </ImageBackground>
         </View>
