@@ -107,8 +107,9 @@ const LoginScreen = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent:'center' }}>
             <View style={commonStyle.contentBox}>
-              <View style={commonStyle.section}>
-                <Text style={styles.title}> CMO AI Photo Gallery</Text>
+              <View style={styles.titlecm}>
+                <Text style={styles.title}> Hamar CM</Text>
+                <Text style={styles.title}>हमर सीएम</Text>
                 {/* <Text style={styles.subTitle}>On Click Download</Text> */}
               </View>
 
@@ -206,11 +207,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
-  title: {
-    // color: colors.primary,
+  title: {  // color: colors.primary,
+    fontWeight: '900',
+    fontSize: 30,
+    color: colors.primary,
     fontWeight: '700',
-    fontSize: 24
+    fontSize: 30
+    
   },
+  titlecm: {
+    alignItems: 'center',
+    marginBottom: 20,
+  marginTop: -20,},
   subTitle: {
     color: colors.primary,
     fontSize: 11

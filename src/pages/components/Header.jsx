@@ -35,12 +35,12 @@ const Header = (props) => {
   // 🔹 Manual Translations
   const TEXT = {
     EN: {
-      dashboard: 'CMO AI Photo Gallery',
+      dashboard: 'Hamar CM',
       logout: 'Logout',
       profile: 'Profile',
     },
     HI: {
-      dashboard: 'सीएमओ एआई फोटो गैलरी',
+      dashboard: 'हमर सीएम',
       logout: 'लॉगआउट',
       profile: 'प्रोफाइल',
     },

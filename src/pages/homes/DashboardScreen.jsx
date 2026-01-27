@@ -117,7 +117,7 @@ const DashboardScreen = () => {
     dispatch(getNotice({}))
     dispatch(getVideo({}))
     dispatch(getPatrika({}))
-    dispatch(getVideoLive({}))
+    // dispatch(getVideoLive({}))
     dispatch(getEventCorner({}))
     dispatch(getEvents({with_cm:''}))
     dispatch(getDistricts({}))
@@ -280,7 +280,6 @@ useEffect(() => {
                 </ScrollView>
             </View>
 
-     {video?.videoLiveList?.length != 0 &&             
       <TouchableOpacity onPress={() => navigation.navigate('YoutubeLiveScreen') } style={{marginVertical: 20, marginHorizontal: 10}}>
         <View style={{ 
          borderTopWidth: 1,
@@ -306,7 +305,7 @@ useEffect(() => {
 
        
       </TouchableOpacity>
-      }
+      
      
 
                   

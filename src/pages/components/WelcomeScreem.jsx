@@ -24,6 +24,11 @@ const WelcomeScreen = () => {
     <SafeAreaView style={styles.container}>
       <ImageBackground style={styles.background} source={WelcomeImg} resizeMode="cover">
         <Image style={styles.logo} source={LogoWhiteImg} />
+        <Text style={styles.titleCm}>Hamar CM</Text>
+                        <Text style={styles.titleCm}>हमर सीएम</Text>
+        
+
+
         <Text style={styles.title}>Chhattisgarh's</Text>
 
         <View style={{...styles.textRow, marginTop:2}}>
@@ -84,6 +89,15 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 26,
     color: 'white',
+    marginTop:10
+  },
+  titleCm:{ 
+    fontWeight: '900',
+    fontSize: 30,
+    color: colors.primary,
+    marginBottom:10,
+    marginTop:-20,
+    paddingVertical:5
   },
   textRow: {
     flexDirection: 'row',

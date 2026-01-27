@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, use } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,82 +7,98 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Dimensions,
 } from 'react-native';
-import YoutubePlayer from "react-native-youtube-iframe";
+import YoutubePlayer from 'react-native-youtube-iframe';
 import { useDispatch, useSelector } from 'react-redux';
 import { NoLiveImg, BackArrowImg } from '../assets';
 import { useNavigation } from '@react-navigation/native';
 import { getVideoLive } from '../../redux/actions/VideoAction';
-import { useTranslation } from '../../hooks/useTranslation';
-
-const { width } = Dimensions.get("window");
 
 const YoutubeLiveScreen = () => {
-  const { t } = useTranslation();
   const navigation = useNavigation();
-  const playerRef = useRef(null);
   const dispatch = useDispatch();
-  
+  const playerRef = useRef(null);
+
+  const { liveNow, pastLives, loading } = useSelector(
+    state => state.video
+  );
+
   useEffect(() => {
-    dispatch(getVideoLive({}))
+    dispatch(getVideoLive());
   }, []);
-  const video = useSelector(state => state.video);
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
+
+        {/* HEADER */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image source={BackArrowImg} style={{ width: 30, height: 30,marginLeft: 10 }} />
+            <Image source={BackArrowImg} style={styles.backIcon} />
           </TouchableOpacity>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginLeft: 15 }}>
-           
-            <Text style={styles.headerText}>YouTube Live</Text>
-          </View>
+          <Text style={styles.headerText}>YouTube Live</Text>
         </View>
 
-          <View style={{margin:20}} >
-               {video?.videoLiveList?.length != 0 && video?.videoLiveList?.[0]?.link?.split("/").filter(Boolean).pop() ?
-                <YoutubePlayer
-                      ref={playerRef}
+        {/* 🔴 CURRENT LIVE */}
+        <View style={styles.section}>
+          {liveNow?.length > 0 ? (
+            <YoutubePlayer
+              ref={playerRef}
+              height={220}
+              play={false}
+              videoId={liveNow[0]?.id?.videoId}
+            />
+          ) : (
+            <View style={styles.placeholderPlayer}>
+              <Image source={NoLiveImg} style={styles.noLiveImage} />
+              <Text style={styles.placeholderTitle}>
+                No Live Video Right Now
+              </Text>
+              <Text style={styles.placeholderSubtitle}>
+                Showing past live videos
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* ⏺️ PAST LIVE VIDEOS */}
+        <View style={styles.section}>
+          {pastLives?.map((item, index) => (
+            <View key={index} style={styles.pastItem}>
+              <YoutubePlayer
                 height={200}
                 play={false}
-                videoId={video?.videoLiveList?.[0]?.link?.split("/").filter(Boolean).pop()}
-              />:
-                <View style={styles.placeholderPlayer}>
-                  <Image source={NoLiveImg} style={styles.noLiveImage} />
-                  <Text style={styles.placeholderTitle}>No YouTube Live Video Found..</Text>
-                  <Text style={styles.placeholderSubtitle}>Stay Tuned</Text>
-                </View>
+                videoId={item?.id?.videoId}
+              />
+              <Text style={styles.videoTitle}>
+                {item?.snippet?.title}
+              </Text>
+            </View>
+          ))}
+        </View>
 
-               }
-          </View>
-
-          {/* Title */}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-
 export default YoutubeLiveScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
-    backgroundColor:'white'
-
+    backgroundColor: 'white',
   },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    borderColor: '#e0e0e0',
+    padding: 15,
+  },
+
+  backIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 12,
   },
 
   headerText: {
@@ -91,59 +107,42 @@ const styles = StyleSheet.create({
     color: '#1f1f1f',
   },
 
- 
-
-  playerWrapper: {
-    borderWidth: 2,
-    borderColor: '#ff9900',
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: '#000',
+  section: {
+    marginHorizontal: 16,
+    marginTop: 20,
   },
 
   placeholderPlayer: {
-    marginTop: 100,
     paddingVertical: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
   },
 
   noLiveImage: {
     width: 80,
     height: 80,
-    resizeMode: 'contain',
-    marginBottom: 20,
+    marginBottom: 15,
   },
 
   placeholderTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#1f1f1f',
-    textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 6,
   },
 
   placeholderSubtitle: {
-    fontSize: 14,
-    color: '#888',
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-
-  title: {
-    marginTop: 15,
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
-    lineHeight: 22,
-  },
-
-  description: {
-    marginTop: 10,
     fontSize: 13,
-    color: '#555',
-    lineHeight: 20,
-    fontWeight: '400',
+    color: '#777',
+  },
+
+  pastItem: {
+    marginBottom: 25,
+  },
+
+  videoTitle: {
+    marginTop: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#000',
   },
 });

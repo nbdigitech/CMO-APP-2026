@@ -12,16 +12,21 @@ export const getStories = createAsyncThunk(
         },
       });
 
-      console.log("Story Response Raw:", response.data);
-
       // Handle both array response and nested response
-      let stories = Array.isArray(response.data) ? response.data : response.data?.data || [];
-      
-      const newstories = stories.reduce((acc, item) => {
+      let stories = Array.isArray(response.data)
+        ? response.data
+        : response.data?.data || [];
+
+      // ✅ 1. Reverse stories (latest first)
+      const reversedStories = [...stories].reverse();
+
+      // ✅ 2. Group by title AFTER reversing
+      const newstories = reversedStories.reduce((acc, item) => {
         const existing = acc.find(el => el.title === item.title);
-        
-        // Handle both single image and array of images
-        const itemImages = Array.isArray(item.images) ? item.images : [item.image];
+
+        const itemImages = Array.isArray(item.images)
+          ? item.images
+          : [item.image];
 
         if (existing) {
           existing.images.push(...itemImages);
@@ -34,11 +39,9 @@ export const getStories = createAsyncThunk(
 
         return acc;
       }, []);
-
-      
+console.log("Grouped Stories:", newstories);
       return newstories;
     } catch (error) {
-      console.log("Error fetching stories:", error);
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Fetch failed"
       );
