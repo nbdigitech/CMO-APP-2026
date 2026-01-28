@@ -14,6 +14,7 @@ const videoSlice = createSlice({
     // 🔹 NEW (YouTube)
     liveNow: [],
     pastLives: [],
+    nextPageToken: null, // For pagination
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -47,11 +48,18 @@ const videoSlice = createSlice({
       .addCase(getVideoLive.fulfilled, (state, action) => {
         state.loading = false;
 
-        // 🔴 Current Live
+        // 🔴 Current Live (always replace)
         state.liveNow = action.payload.liveNow || [];
 
-        // ⏺️ Past Live
-        state.pastLives = action.payload.pastLives || [];
+        // ⏺️ Past Live (append or replace)
+        if (action.payload.append) {
+          state.pastLives = [...state.pastLives, ...action.payload.pastLives];
+        } else {
+          state.pastLives = action.payload.pastLives || [];
+        }
+
+        // Save pagination token
+        state.nextPageToken = action.payload.nextPageToken || null;
 
         state.error = null;
       })

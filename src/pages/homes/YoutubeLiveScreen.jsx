@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,8 +19,9 @@ const YoutubeLiveScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const playerRef = useRef(null);
+  const scrollViewRef = useRef(null);
 
-  const { liveNow, pastLives, loading } = useSelector(
+  const { liveNow, pastLives, loading, nextPageToken } = useSelector(
     state => state.video
   );
 
@@ -27,9 +29,28 @@ const YoutubeLiveScreen = () => {
     dispatch(getVideoLive());
   }, []);
 
+  // Handle infinite scroll - load more videos when reaching bottom
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const contentHeight = event.nativeEvent.contentSize.height;
+    const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+
+    // If near bottom and next page available
+    if (offsetY + scrollViewHeight >= contentHeight - 500) {
+      if (nextPageToken && !loading) {
+        dispatch(getVideoLive({ pageToken: nextPageToken, append: true }));
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollEventThrottle={400}
+      >
 
         {/* HEADER */}
         <View style={styles.header}>
@@ -75,6 +96,14 @@ const YoutubeLiveScreen = () => {
               </Text>
             </View>
           ))}
+
+          {/* Loading indicator for pagination */}
+          {loading && nextPageToken && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#FF0000" />
+              <Text style={styles.loadingText}>Loading more videos...</Text>
+            </View>
+          )}
         </View>
 
       </ScrollView>
@@ -144,5 +173,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#000',
+  },
+
+  loadingContainer: {
+    paddingVertical: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loadingText: {
+    marginTop: 10,
+    fontSize: 14,
+    color: '#FF0000',
   },
 });
