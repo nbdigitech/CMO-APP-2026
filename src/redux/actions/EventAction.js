@@ -3,21 +3,29 @@ import { baseUrl } from "../../services/apiConfig";
 import api from "../../utils/api";
 import RNFetchBlob from 'rn-fetch-blob';
 export const getEvents = createAsyncThunk(
-    "events/get",
-    async (data, thunkAPI) => {
-        try{
-            const response = await api.get(`${baseUrl}albums?with_cm=${data.with_cm}`,{
-                headers: {
-                    Accept: 'application/json',
-                  },
-            })
-            return response.data
+  "events/get",
+  async (data, thunkAPI) => {
+    console.log("🔥 getEvents thunk called", data);
+
+    try {
+      const response = await api.get(
+        `${baseUrl}albums?with_cm=yes`,  
+        {
+          headers: { Accept: "application/json" },
         }
-        catch(error){
-            return thunkAPI.rejectWithValue(error.response?.data?.message || 'Fetched failed');
-        }
+      );
+
+      console.log("✅ EVENT RESPONSE:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("❌ EVENT ERROR:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Fetch failed"
+      );
     }
-)
+  }
+);
+
 
 export const getPhotos = createAsyncThunk(
     'photos/get',
