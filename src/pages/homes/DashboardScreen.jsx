@@ -367,12 +367,17 @@ useEffect(() => {
 
       {/* Tab Content */}
       <View style={{ flex: 1, padding: 10 }}>
-        {/* {activeTab === "Tab1" ? renderList(event?.eventList) : renderList(dataTab2)} */}
-        {
-          event?.eventsList?.slice(0, 10)?.map((value, index) => {
-            return renderItem(value, index)
-          })
-        }
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{minHeight: 330}}>
+          {
+            event?.eventsList?.slice(0, 10)?.map((value, index) => {
+              return (
+                <View key={index} style={{width: width * 0.9, marginRight: 15}}>
+                  {renderItem(value, index)}
+                </View>
+              )
+            })
+          }
+        </ScrollView>
       </View>
     </View>
 

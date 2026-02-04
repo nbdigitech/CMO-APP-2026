@@ -8,8 +8,16 @@ export const getEvents = createAsyncThunk(
     console.log("🔥 getEvents thunk called", data);
 
     try {
+      const withCm = data?.with_cm ?? "";
+      const page = data?.page || 1;
+      const limit = data?.limit || 16;
+      const districts = data?.districts || "";
+      const departments = data?.departments || "";
+      const from_date = data?.from_date || "";
+      const to_date = data?.to_date || "";
+
       const response = await api.get(
-        `${baseUrl}albums?with_cm=yes`,  
+        `${baseUrl}albums?page=${page}&limit=${limit}&districts=${districts}&departments=${departments}&from_date=${from_date}&to_date=${to_date}&with_cm=${withCm}`,  
         {
           headers: { Accept: "application/json" },
         }

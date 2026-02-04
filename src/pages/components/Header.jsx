@@ -60,7 +60,7 @@ const Header = (props) => {
   };
 
   const getEventHandle = () => {
-    dispatch(getEvents({ with_cm: 'with' }));
+    dispatch(getEvents({ with_cm: '' }));
     dispatch(getDistricts({}));
   };
 
